@@ -1,0 +1,12 @@
+1.sudo grep-c"svm\|vmx"/proc/cpuinfo
+2.sudo apt install qemu-kvm libvirt-daemon-system virt-manager brid
+3.sudo apt-get update
+4.sudo apt-get install qemu-kvm libvirt-daemon-system virt-manager bridge-utils
+5.sudo apt install qemu-kvm libvirt-clients libvirt-daemon-system bridge-utils
+6.sudo systemctl start libvirtd
+7.sudo usermod -aG kvm $USER
+8.sudo systemctl is-active libvirtd
+9.sudo usermod -aG libvirt $USER
+sudo usermod -aG kvm $USER
+10.virt-manager
+11.kvm-ok
