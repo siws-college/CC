@@ -1,0 +1,43 @@
+const express = require('express');
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
+const app = express();
+const port = 3000;
+// Define storage using multer.diskStorage
+const storage = multer.diskStorage({
+ destination: (req, file, cb) => {
+ // Set the destination folder where the file will be saved
+ const uploadFolder = 'uploads';
+ fs.mkdirSync(uploadFolder, { recursive: true });
+ cb(null, uploadFolder);
+ },
+ filename: (req, file, cb) => {
+ // Set the filename to the original filename
+ cb(null, file.originalname);
+ },
+});
+const upload = multer({ storage: storage });
+app.post('/upload', upload.single('file'), (req, res) => {
+ const file = req.file;
+ // Check if file is present
+ if (!file) {
+ return res.status(400).json({ success: false, message: 'No file uploaded.' });
+ }
+ // Process the file as needed (save to disk, database, etc.)
+ res.json({ success: true, message: 'File uploaded successfully.' });
+});
+app.get('/download/:filename', (req, res) => {
+ const filename = req.params.filename;
+ const filePath = path.join(__dirname, 'uploads', filename);
+ // Check if file exists
+ if (fs.existsSync(filePath)) {
+ // Implement logic to send the file as a response
+ res.sendFile(filePath);
+ } else {
+ res.status(404).json({ success: false, message: 'File not found.' });
+ }
+});
+app.listen(port, () => {
+ console.log(Server is running on http://localhost:${port});
+});
